@@ -8,12 +8,14 @@ type IconProps=PropsWithChildren<{
 }>
 
 const Icons=({name}:IconProps)=> {
+    console.log("name",name);
+    
  switch(name){
     case 'circle':
         return <Icon name={'circle-thin'} size={30} color="#F7CD2c"/>
     break;
-    case 'circle':
-        return <Icon name={'cross'} size={30} color="#38cc77"/>
+    case 'cross':
+        return <Icon name={'times'} size={30} color="#38cc77"/>
     break;
     default:
         return <Icon name={'pencil'} size={30} color="#D0D0D0"/>
