@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import Icons from './components/Icons';
+import Sound from 'react-native-sound';
 
 
 function App(): React.JSX.Element {
@@ -18,11 +19,14 @@ function App(): React.JSX.Element {
   const [gameState, setGameState]=useState(new Array(9).fill("empty", 0, 9));
   const [isGameActive, setIsGameActive]=useState<boolean>(false);
 
+  const sound=new Sound("gamewin.wav", Sound.MAIN_BUNDLE, (error)=>{
+    if(error){
+      console.log('Error loading sound: ', error);
+    }
+  })
 
   useEffect(()=>{
     const isGameStateEmpty=gameState.every(step=> step==="empty");
-    console.log("isGameStateEmpty",isGameStateEmpty);
-    
     if(isGameStateEmpty){
       setIsGameActive(false)
     }else{
@@ -40,20 +44,28 @@ function App(): React.JSX.Element {
   const CheckIsWinner=()=>{
     if(gameState[0]===gameState[1] && gameState[0]=== gameState[2] && gameState[0]!=="empty"){
       setGameWinner(`${gameState[0]} won the game! `);
+      AudioPlay();
     }else if(gameState[3]===gameState[4] && gameState[3]===gameState[5] && gameState[3]!== "empty"){
       setGameWinner(`${gameState[3]} won the game`);
+      AudioPlay();
     }else if(gameState[6]===gameState[7] && gameState[6] === gameState[8] && gameState[6]!=="empty"){
       setGameWinner(`${gameState[6]} won the game!`);
+      AudioPlay();
     }else if(gameState[0] === gameState[3] && gameState[0]===gameState[6] && gameState[0]!=="empty"){
       setGameWinner(`${gameState[0]} won the game!`);
+      AudioPlay();
     }else if(gameState[1]=== gameState[4] && gameState[1]==gameState[7] && gameState[1] !=="empty"){
       setGameWinner(`${gameState[1]} won the game!`);
+      AudioPlay();
     }else if( gameState[2] !== 'empty' && gameState[2] === gameState[5] && gameState[5] === gameState[8]){
       setGameWinner(`${gameState[2]} won the game!`);
+      AudioPlay();
     }else if( gameState[0] !== 'empty' && gameState[0] === gameState[4] && gameState[4] === gameState[8]){
       setGameWinner(`${gameState[0]} won the game!`);
+      AudioPlay();
     }else if(gameState[2] !== 'empty' && gameState[2] === gameState[4] && gameState[4] === gameState[6]){
       setGameWinner(`${gameState[2]} won the game!`);
+      AudioPlay();
     }else if(!gameState.includes("empty", 0)){
       setGameWinner("Game Draw!")
     }
@@ -79,6 +91,16 @@ const onChangeItem=(itemNumber:number)=>{
     })
   }
   CheckIsWinner();
+}
+
+const AudioPlay= ()=>{
+  sound.play((success)=>{
+    if(success){
+      console.info("Sound played successfully!")
+    }else{
+      console.info("Sound played failed!")
+    }
+  })
 }
 
   return (
